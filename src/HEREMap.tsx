@@ -7,6 +7,7 @@ import cache, { onAllLoad } from "./utils/cache";
 import getLink from "./utils/get-link";
 import getPlatform from "./utils/get-platform";
 import getScriptMap from "./utils/get-script-map";
+import isRetina from "./utils/is-retina";
 
 // declare an interface containing the required and potential
 // props that can be passed to the HEREMap component
@@ -15,7 +16,7 @@ export interface HEREMapProps extends H.Map.Options {
   appCode: string;
   animateCenter?: boolean;
   animateZoom?: boolean;
-  hidpi?: boolean;
+  hidpi?: "auto" | true | false;
   interactive?: boolean;
   secure?: boolean;
 }
@@ -79,6 +80,9 @@ export class HEREMap
         zoom,
       } = this.props;
 
+      // auto-detect retina devices if hidpi is "auto"
+      const retina = hidpi === "auto" ? isRetina : hidpi;
+
       // get the platform to base the maps on
       const platform = getPlatform({
         app_code: appCode,
@@ -87,7 +91,7 @@ export class HEREMap
       });
 
       const defaultLayers = platform.createDefaultLayers({
-        ppi: hidpi ? 320 : 72,
+        ppi: retina ? 320 : 72,
       });
 
       const hereMapEl = ReactDOM.findDOMNode(this);
@@ -97,7 +101,7 @@ export class HEREMap
         defaultLayers.normal.map,
         {
           center,
-          pixelRatio: hidpi ? 2 : 1,
+          pixelRatio: retina ? 2 : 1,
           zoom,
         },
       );

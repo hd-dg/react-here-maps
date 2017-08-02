@@ -118,7 +118,7 @@ interface HEREMapProps extends H.Map.Options {
     appCode        : string;   // the app_code provided to you when you registered your HERE Maps Application
     animateCenter? : boolean;  // animate automatic transitions between center positions
     animateZoom?   : boolean;  // animate automatic transitions betweeen zoom positions
-    hidpi?         : boolean;  // raise the display resolution and pixel ratio of the map (for modern displays) 
+    hidpi?         : "auto" | true | false;  // raise the display resolution and pixel ratio of the map (for modern displays) 
     interactive?   : boolean;  // whether you want the map to be interactive, responding to user input and displaying UI controls (defaults to true)
     secure?        : boolean;  // whether you want to use HTTPS
 }
